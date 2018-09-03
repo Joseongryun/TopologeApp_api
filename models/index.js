@@ -22,6 +22,4 @@ fs.readdirSync(__dirname).filter(function (file) {
   db[model.name] = model;
 });
 
-sequelize.sync();
-
 module.exports = {db, Sequelize, sequelize};

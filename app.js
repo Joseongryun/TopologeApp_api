@@ -1,7 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const routes = require('./routes')
-const models = require('./models')
+const routes = require('./routes');
 
 const app = express();
 
@@ -22,6 +21,8 @@ function configApp() {
   app.use('/', routes);
   app.use('/upload', express.static('uploads'));
 }
+
+configApp();
 
 app.listen(3001, function () {
   console.log('listening on *: 3001');

@@ -32,6 +32,16 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING(32),
       allowNull: false
     },
+    n_x: {
+      field: "n_x",
+      type: DataTypes.INTEGER,
+      allowNull: false
+    },
+    n_y: {
+      field: "n_y",
+      type: DataTypes.INTEGER,
+      allowNull: false
+    },
     n_image: {
       field: "n_image",
       type: DataTypes.STRING(50),
