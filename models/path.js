@@ -25,7 +25,13 @@ module.exports = (sequelize, DataTypes) => {
     p_option: {
       field: "p_option",
       type: DataTypes.STRING(32),
-      defaultValue: "straight",
+      defaultValue: "solid",
+      allowNull: false
+    },
+    p_color: {
+      field: "p_color",
+      type: DataTypes.STRING(32),
+      defaultValue: "black",
       allowNull: false
     }
   }, {
