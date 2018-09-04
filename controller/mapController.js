@@ -5,9 +5,11 @@ exports.get_map_list = (req, res) => {
     attributes: ['m_id', 'm_name', 'm_image']
   }).then((result) => {
     res.status(200).json(result);
+    return;
   }).catch((error) => {
     console.log(error);
     res.status(400).send("Process error");
+    return;
   })
 }
 
@@ -21,9 +23,11 @@ exports.add_map = (req, res) => {
     m_image: req.file.filename
   }).then((result) => {
     res.status(200).json(result);
+    return;
   }).catch((error) => {
     console.log(error)
     res.status(400).send("Process error");
+    return;
   })
 }
 
@@ -42,9 +46,11 @@ exports.delete_map = (req, res) => {
       return;
     }
     res.status(200).json(result);
+    return;
   }).catch((error) => {
     console.log(error);
     res.status(400).send("Process error");
+    return;
   })
 }
 
@@ -63,8 +69,10 @@ exports.get_map = (req, res) => {
       return;
     }
     res.status(200).json(result);
+    return;
   }).catch((error) => {
     console.log(error)
     res.status(400).send("Process error");
+    return;
   })
 }
