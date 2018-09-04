@@ -17,6 +17,7 @@ exports.get_node_list = (req, res) => {
       return;
     }
     model.node.findAll({
+      attributes: ['n_id', 'm_id', 'n_hostname', 'n_status', 'n_x', 'n_y', 'n_image'],
       where: {
         m_id
       }
@@ -49,22 +50,35 @@ exports.add_node = (req, res) => {
     res.status(400).send(err.CheckVal);
     return;
   }
-  model.node.create({
-    m_id,
-    n_ip,
-    n_hostname,
-    n_kinds,
-    n_status,
-    n_x,
-    n_y,
-    n_image
-  }).then((result) => {
-    res.status(200).json(result);
-    return;
+  model.map.findOne({
+    where: {
+      m_id
+    }
+  }).then((map) => {
+    if (map == null) {
+      res.status(400).send(err.NotExist);
+      return;
+    }
+    model.node.create({
+      m_id: Number(m_id),
+      n_ip,
+      n_hostname,
+      n_kinds,
+      n_status,
+      n_x,
+      n_y,
+      n_image
+    }).then((result) => {
+      res.status(200).json(result);
+      return;
+    }).catch((error) => {
+      console.log(error);
+      res.status(400).send(err.ProcessErr)
+      return;
+    })
   }).catch((error) => {
     console.log(error);
-    res.status(400).send(err.ProcessErr)
-    return;
+    res.status(400).send(err.ProcessErr);
   })
 
 }
@@ -75,11 +89,15 @@ exports.delete_node = (req, res) => {
     res.status(400).send(err.CheckVal);
     return;
   }
-  map.node.destory({
+  model.node.destroy({
     where: {
       n_id
     }
   }).then((result) => {
+    if (result == 0) {
+      res.status(400).send(err.NotExist);
+      return;
+    }
     res.status(200).json(result);
     return;
   }).catch((error) => {
@@ -95,14 +113,19 @@ exports.get_node = (req, res) => {
     res.status(400).send(err.CheckVal);
     return;
   }
-  map.node.findOne({
+  model.node.findOne({
     where: {
       n_id
     }
   }).then((result) => {
+    if (result == null) {
+      res.status(400).send(err.NotExist);
+      return;
+    }
     res.status(200).json(result);
     return;
   }).catch((error) => {
+    console.log(error);
     res.status(400).send(err.ProcessErr);
   })
 }
@@ -113,12 +136,16 @@ exports.get_node_location = (req, res) => {
     res.status(400).send(err.CheckVal);
     return;
   }
-  map.node.findOne({
-    attributes: [n_x, n_y],
+  model.node.findOne({
+    attributes: ['n_x', 'n_y'],
     where: {
       n_id
     }
   }).then((result) => {
+    if (result == null) {
+      res.status(400).send(err.NotExist);
+      return;
+    }
     res.status(200).json(result);
     return;
   }).catch((error) => {
@@ -135,7 +162,7 @@ exports.edit_node_basic = (req, res) => {
     res.status(400).send(err.CheckVal);
     return;
   }
-  map.node.update({
+  model.node.update({
     n_hostname,
     n_kinds,
     n_status
@@ -144,11 +171,15 @@ exports.edit_node_basic = (req, res) => {
       n_id: n_id
     }
   }).then((result) => {
+    if (result[0] == 0) {
+      res.status(400).send(err.NotExist);
+      return;
+    }
     res.status(200).json(result);
     return;
   }).error((error) => {
     console.log(error);
-    res.status(400).json(error);
+    res.status(400).send(err.ProcessErr);
     return;
   })
 }
@@ -161,7 +192,7 @@ exports.edit_node_location = (req, res) => {
     res.status(400).send(err.CheckVal);
     return;
   }
-  map.node.update({
+  model.node.update({
     n_x,
     n_y
   }, {
@@ -169,7 +200,11 @@ exports.edit_node_location = (req, res) => {
       n_id
     }
   }).then((result) => {
-    res.status(200).json(result);
+    if (result[0] == 0) {
+      res.status(400).send(err.NotExist);
+      return;
+    }
+    res.status(200).send(result);
     return;
   }).catch((error) => {
     console.log(error);
@@ -184,13 +219,17 @@ exports.edit_node_image = (req, res) => {
     res.status(400).send(err.CheckVal);
     return;
   }
-  map.node.update({
+  model.node.update({
     n_image
   }, {
     where: {
       n_id
     }
   }).then((result) => {
+    if (result[0] == 0) {
+      res.status(400).send(err.NotExist);
+      return;
+    }
     res.status(200).json(result);
   }).catch((error) => {
     console.log(error);

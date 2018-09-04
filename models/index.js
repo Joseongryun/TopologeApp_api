@@ -5,11 +5,10 @@ const env = require('../config/db.config')
 const sequelize = new Sequelize(
   env.database,
   env.username,
-  env.password,
-  {
-    'host' : env.host,
+  env.password, {
+    'host': env.host,
     'port': env.port,
-    'dialect' : env.dialect
+    'dialect': env.dialect
   }
 );
 
@@ -22,4 +21,31 @@ fs.readdirSync(__dirname).filter(function (file) {
   db[model.name] = model;
 });
 
-module.exports = {db, Sequelize, sequelize};
+function foreignConfig() {
+  db.map.hasMany(db.node, {
+    foreignKey: 'm_id',
+    sourceKey: 'm_id'
+  });
+  db.map.hasMany(db.path, {
+    foreignKey: 'm_id',
+    sourceKey: 'm_id'
+  });
+
+  db.node.hasMany(db.path, {
+    foreignKey: 'p_start',
+    sourceKey: 'n_id'
+  });
+
+  db.node.hasMany(db.path, {
+    foreignKey: 'p_end',
+    sourceKey: 'n_id'
+  });
+}
+
+foreignConfig();
+
+module.exports = {
+  db,
+  Sequelize,
+  sequelize
+};

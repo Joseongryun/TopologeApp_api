@@ -1,3 +1,5 @@
+
+
 module.exports = (sequelize, DataTypes) => {
   return sequelize.define('map', {
     m_id: {

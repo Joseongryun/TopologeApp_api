@@ -1,3 +1,5 @@
+const model = require('./index');
+
 module.exports = (sequelize, DataTypes) => {
   return sequelize.define('path', {
     p_id: {

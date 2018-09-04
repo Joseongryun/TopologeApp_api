@@ -45,7 +45,20 @@ exports.add_path = (req, res) => {
     res.status(400).send(err.CheckVal);
     return;
   }
-  model.path.craete({
+  var p_start_result;
+  model.map.findOne({
+    where: {
+      m_id
+    }
+  }).then((result) => {
+    if(result == null){
+      res.status(400).send(err.NotExist);
+    }
+    next();
+  })
+  //let p_end_result = 
+  //let m_id_result = 
+  model.path.create({
     m_id,
     p_start,
     p_end,
@@ -86,7 +99,7 @@ exports.delete_path_node = (req, res) => {
   if (n_id == undefined) {
     res.status(400).send(err.CheckVal);
   }
-  map.path.destory({
+  model.path.destory({
     where: {
       [Op.or]: [{
         p_start: n_id
