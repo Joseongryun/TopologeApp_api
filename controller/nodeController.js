@@ -173,6 +173,6 @@ exports.edit_node_image = (req, res) => {
     res.status(200).json(result);
   }).catch((error) => {
     console.log(error);
-    res.status(400).send("Process error");
+    res.status(400).send("Process error")
   })
 }
