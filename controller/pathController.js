@@ -45,21 +45,8 @@ exports.add_path = (req, res) => {
     res.status(400).send(err.CheckVal);
     return;
   }
-  var p_start_result;
-  model.map.findOne({
-    where: {
-      m_id
-    }
-  }).then((result) => {
-    if(result == null){
-      res.status(400).send(err.NotExist);
-    }
-    next();
-  })
-  //let p_end_result = 
-  //let m_id_result = 
   model.path.create({
-    m_id,
+    m_id: Number(m_id),
     p_start,
     p_end,
     p_option,
@@ -80,34 +67,15 @@ exports.delete_path = (req, res) => {
     res.status(400).send(err.CheckVal);
     return;
   }
-  model.path.destory({
+  model.path.destroy({
     where: {
       p_id
     }
   }).then((result) => {
-    res.status(200).json(result);
-    return;
-  }).catch((error) => {
-    console.log(error);
-    res.status(400).send(err.ProcessErr);
-    return;
-  })
-}
-
-exports.delete_path_node = (req, res) => {
-  var n_id = req.params.n_id;
-  if (n_id == undefined) {
-    res.status(400).send(err.CheckVal);
-  }
-  model.path.destory({
-    where: {
-      [Op.or]: [{
-        p_start: n_id
-      }, {
-        p_end: n_id
-      }]
+    if (result == 0) {
+      res.status(400).send(err.NotExist);
+      return;
     }
-  }).then((result) => {
     res.status(200).json(result);
     return;
   }).catch((error) => {
@@ -128,6 +96,10 @@ exports.get_path = (req, res) => {
       p_id
     }
   }).then((result) => {
+    if (result == null) {
+      res.status(400).send(err.NotExist);
+      return;
+    }
     res.status(200).json(result);
     return;
   }).catch((error) => {
@@ -154,6 +126,10 @@ exports.edit_path_design = (req, res) => {
       p_id
     }
   }).then((result) => {
+    if (result[0] == 0) {
+      res.status(400).send(err.NotExist);
+      return;
+    }
     res.status(200).json(result);
     return;
   }).catch((error) => {

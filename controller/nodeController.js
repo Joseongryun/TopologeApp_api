@@ -50,37 +50,23 @@ exports.add_node = (req, res) => {
     res.status(400).send(err.CheckVal);
     return;
   }
-  model.map.findOne({
-    where: {
-      m_id
-    }
-  }).then((map) => {
-    if (map == null) {
-      res.status(400).send(err.NotExist);
-      return;
-    }
-    model.node.create({
-      m_id: Number(m_id),
-      n_ip,
-      n_hostname,
-      n_kinds,
-      n_status,
-      n_x,
-      n_y,
-      n_image
-    }).then((result) => {
-      res.status(200).json(result);
-      return;
-    }).catch((error) => {
-      console.log(error);
-      res.status(400).send(err.ProcessErr)
-      return;
-    })
+  model.node.create({
+    m_id: Number(m_id),
+    n_ip,
+    n_hostname,
+    n_kinds,
+    n_status,
+    n_x,
+    n_y,
+    n_image
+  }).then((result) => {
+    res.status(200).json(result);
+    return;
   }).catch((error) => {
     console.log(error);
-    res.status(400).send(err.ProcessErr);
+    res.status(400).send(err.ProcessErr)
+    return;
   })
-
 }
 
 exports.delete_node = (req, res) => {
