@@ -5,10 +5,12 @@ var storage = multer.diskStorage({
     cb(null, 'uploads/');
   },
   filename: (req, file, cb) => {
-    cb(null, new Date().valueOf() + file.originalname);
+    cb(null, file.originalname + "_" + new Date().valueOf());
   }
 });
 
-var upload = multer({storage : storage});
+var upload = multer({
+  storage: storage
+});
 
 module.exports = upload;
