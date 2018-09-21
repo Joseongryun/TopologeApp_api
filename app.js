@@ -20,9 +20,12 @@ function configApp() {
 
   app.use('/', routes);
   app.use('/upload', express.static('uploads'));
+  app.set('etag', false);
 }
 
 configApp();
+
+
 
 app.listen(3001, function () {
   console.log('listening on *: 3001');
